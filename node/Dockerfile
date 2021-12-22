@@ -1,6 +1,6 @@
 FROM canal/otter-osbase:v1
 
-MAINTAINER tang.cheng (793059909@qq.com)
+MAINTAINER mengchuan.zhang (190933370@qq.com)
 
 # install otter
 COPY image/ /tmp/docker/
@@ -11,8 +11,10 @@ RUN \
     cp -R /tmp/docker/alidata /alidata && \
     chmod +x /alidata/bin/* && \
     mkdir -p /home/admin && \
+    cp -R /tmp/docker/admin/* /home/admin/  && \
     /bin/cp -f alidata/bin/lark-wait /usr/bin/lark-wait && \
     chmod +x /home/admin/*.sh  && \
+    chmod +x /home/admin/bin/*.sh  && \
     chown admin: -R /home/admin && \
     yum clean all && \
     true

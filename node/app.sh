@@ -50,18 +50,40 @@ waittermpid() {
         return "${error}"
 }
 
-
-
+function checkStart() {
+    local name=$1
+    local cmd=$2
+    local timeout=$3
+    cost=5
+    while [ $timeout -gt 0 ]; do
+        ST=`eval $cmd`
+        if [ "$ST" == "0" ]; then
+            sleep 1
+            let timeout=timeout-1
+            let cost=cost+1
+        elif [ "$ST" == "" ]; then
+            sleep 1
+            let timeout=timeout-1
+            let cost=cost+1
+        else
+            break
+        fi
+    done
+    echo "$name start successful"
+}
 
 function start_node() {
     echo "start node ..."
-    cd /home/admin/node/bin/ && echo 5 > /home/admin/node/conf/nid && sh startup.sh 1>>/tmp/start.log 2>&1
+    su admin -c 'cd /home/admin/node/bin/ && echo ${NODE_ID:-1} > /home/admin/node/conf/nid && sh startup.sh 1>>/tmp/start.log 2>&1'
+    sleep 5
+    #check start
+    checkStart "node" "nc 127.0.0.1 2088 -w 1 -z | wc -l" 30
 }
 
 function stop_node() {
     # stop node
     echo "stop node"
-    cd /home/admin/node/bin/ && sh stop.sh
+    su admin -c 'cd /home/admin/node/bin/ && sh stop.sh'
     echo "stop node successful ..."
 }
 

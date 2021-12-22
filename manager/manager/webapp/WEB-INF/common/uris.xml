@@ -14,7 +14,7 @@
 
 	<services:uris>
 		<uris:uri id="server">
-            <serverURI>http://${otter.domainName}:${otter.port}/</serverURI>
+            <serverURI>${otter.server.uri}/</serverURI>
 		</uris:uri>
 		<uris:turbine-uri id="homeModule" exposed="true" extends="server">
 			<componentPath>/</componentPath>
